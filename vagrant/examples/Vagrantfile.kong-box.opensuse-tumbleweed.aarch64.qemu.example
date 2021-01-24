@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+def salt_provision_kong_box(context)
+  context.vm.provision "salt", run: 'once' do |salt|
+    salt.minion_config = "salt/etc/minion"
+    salt.masterless = true
+    salt.run_highstate = false
+    salt.verbose = true
+    salt.log_level = "info"
+    salt.colorize = true
+    salt.install_type = "git"
+    salt.version = "3002.2"
+    salt.python_version = "3"
+    salt.bootstrap_options = "-P -x python3 -c /tmp"
+  end
+end
+
+Vagrant.configure("2") do |config|
+
+  config.vagrant.plugins = ["vagrant-reload", "vagrant-scp"]
+
+  config.vm.define "kong-box" do |kong_box|
+    kong_box.vm.box = "opensuse/Tumbleweed.aarch64"
+    kong_box.vm.hostname = "kong-box"
+
+    kong_box.vm.provider "libvirt" do |v, override|
+      override.vagrant.plugins = config.vagrant.plugins + ["vagrant-libvirt"]
+      v.cpus = "2"
+      v.cputopology sockets: "1", cores: "2", threads: "1"
+      v.memory = "2048"
+      v.disk_bus = "virtio"
+      v.nic_model_type = "virtio-net-pci"
+      v.nested = false
+      v.cpu_mode = "custom"
+      v.cpu_model = "cortex-a72"
+      v.graphics_type = "vnc"
+      v.machine_type = "virt"
+      v.machine_arch = "aarch64"
+      v.driver = "qemu"
+      v.autostart = false
+
+      override.vm.provision 'shell', run: 'once', inline: 'echo "send host-name \"kong-box\";" >> /etc/dhclient.conf', privileged: true
+      override.vm.provision 'shell', run: 'once', inline: 'zypper install -y -t pattern devel_basis', privileged: true
+      override.vm.provision 'shell', run: 'once', inline: 'zypper install -y sysvinit-tools insserv-compat python3 python3-pip python3-setuptools python3-devel python3-virtualenv python3-pyzmq-devel', privileged: true
+      override.vm.provision 'shell', run: 'once', inline: 'ln --symbolic /etc/os-release /etc/SuSE-release', privileged: true
+      salt_provision_kong_box override
+      override.vm.provision 'reload'
+    end
+
+    kong_box.vm.synced_folder "salt/roots/", "/srv/", type: "rsync"
+    kong_box.vm.synced_folder '.', '/vagrant', disabled: true
+  end
+end
