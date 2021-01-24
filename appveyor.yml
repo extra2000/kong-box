@@ -1,0 +1,25 @@
+os: Ubuntu2004
+platform:
+  - x64
+install:
+  - sudo apt update && sudo apt install --allow-unauthenticated -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils ruby-dev libvirt-dev
+  - sudo wget -nv https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb
+  - sudo dpkg -i vagrant_2.2.9_x86_64.deb
+  - sudo vagrant plugin install vagrant-libvirt vagrant-scp vagrant-reload vagrant-vbguest
+  - git submodule update --init --recursive
+build_script:
+  - cp -v salt/roots/pillar/kong.sls.example salt/roots/pillar/kong.sls
+  - cp -v vagrant/examples/Vagrantfile.kong-box.fedora-33.x86_64.example vagrant/Vagrantfile.kong-box
+  - sudo vagrant up --provider=libvirt kong-box
+  - sudo vagrant ssh kong-box -- sudo salt-call state.highstate
+  - sudo vagrant ssh kong-box -- sudo salt-call state.sls kong.config
+  - sudo vagrant ssh kong-box -- sudo salt-call state.sls kong.service.postgres
+  - sudo vagrant ssh kong-box -- sudo salt-call state.sls kong.service.kong
+  - sudo vagrant destroy --force kong-box
+on_success:
+  - wget https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh
+  - sudo bash install.sh
+  - nvm install lts/*
+  - npm i -D semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/npm @semantic-release/github @semantic-release/git @semantic-release/exec @commitlint/cli @commitlint/config-conventional
+  - npx semantic-release
+test: off
