@@ -1,0 +1,5 @@
+.vagrant
+vagrant/*
+!vagrant/examples
+
+salt/roots/pillar/kong.sls
