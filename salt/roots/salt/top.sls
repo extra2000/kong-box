@@ -1,0 +1,5 @@
+base:
+  '*':
+    - swapoff
+    - podman
+    - cockpit
