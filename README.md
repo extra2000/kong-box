@@ -111,17 +111,22 @@ $ vagrant ssh kong-box -- curl -i http://127.0.0.1:8001/routes
 ```
 
 
-## Simple Example: Adding CVE Search to Kong
+## Simple Example: Forward to CVE Search via Kong
 
 Register CVE Search webservice as `cvesearch` and setup routing with prefix `/cvesearch`:
 ```
 $ vagrant ssh kong-box -- curl -i -X POST --url http://127.0.0.1:8001/services/ --data 'name=cvesearch' --data 'url=https://cve.circl.lu'
-$ vagrant ssh kong-box -- curl -i -X POST --url http://127.0.0.1:8001/services/cvesearch/routes --data 'name=cvesearch-route' --data 'paths[]=/cvesearch'
+$ vagrant ssh kong-box -- curl -i -X POST --url http://127.0.0.1:8001/services/cvesearch/routes --data 'name=cvesearch-route' --data 'paths[]=/'
 ```
 
 Execute the following command from host and make sure it works:
 ```
-$ curl --insecure https://kong-box/cvesearch/api/browse/microsoft
+$ curl --insecure https://kong-box/api/browse/microsoft
+```
+
+To change service URL:
+```
+$ vagrant ssh kong-box -- curl -i -X PATCH --url http://127.0.0.1:8001/services/cvesearch --data 'url=https://www.cve-search.org'
 ```
 
 To delete a service, delete their routes first. For example:
