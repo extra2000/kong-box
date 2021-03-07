@@ -3,3 +3,4 @@ vagrant/*
 !vagrant/examples
 
 salt/roots/pillar/kong.sls
+salt/roots/pillar/zabbix-agent.sls
