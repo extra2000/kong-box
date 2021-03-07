@@ -2,4 +2,3 @@ base:
   '*':
     - swapoff
     - podman
-    - cockpit

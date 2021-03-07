@@ -1,5 +1,4 @@
 base:
   '*':
     - podman
-    - cockpit
     - kong
