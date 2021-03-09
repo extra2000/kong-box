@@ -9,6 +9,8 @@ install:
   - git submodule update --init --recursive
 build_script:
   - cp -v salt/roots/pillar/kong.sls.example salt/roots/pillar/kong.sls
+  - cp -v salt/roots/pillar/zabbix-agent.sls.example salt/roots/pillar/zabbix-agent.sls
+  - cp -v salt/roots/pillar/filebeat.sls.example salt/roots/pillar/filebeat.sls
   - cp -v vagrant/examples/Vagrantfile.kong-box.fedora-33.x86_64.example vagrant/Vagrantfile.kong-box
   - sudo vagrant up --provider=libvirt kong-box
   - sudo vagrant ssh kong-box -- sudo salt-call state.highstate
