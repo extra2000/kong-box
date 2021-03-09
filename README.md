@@ -109,6 +109,7 @@ To start Kong and Postgres containers:
 ```
 $ vagrant ssh kong-box -- sudo salt-call state.sls kong.service.postgres
 $ vagrant ssh kong-box -- sudo salt-call state.sls kong.service.kong
+$ vagrant ssh kong-box -- sudo salt-call state.sls filebeat
 ```
 
 To list services and routes:
