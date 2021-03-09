@@ -18,9 +18,11 @@ $ cd kong-box
 
 ## Creating Vagrant Box
 
-Create Salt pillar file for Kong based on the example. You may modify the value:
+Create Salt pillar file for Zabbix agent, Kong, and Filebeat based on the examples. You may modify the value:
 ```
+$ cp -v salt/roots/pillar/zabbix-agent.sls.example salt/roots/pillar/zabbix-agent.sls
 $ cp -v salt/roots/pillar/kong.sls.example salt/roots/pillar/kong.sls
+$ cp -v salt/roots/pillar/filebeat.sls.example salt/roots/pillar/filebeat.sls
 ```
 
 Copy vagrant file from `vagrant/examples/` and then create the vagrant box (you can change to `--provider=libvirt` if you want to use Libvirt provider):
