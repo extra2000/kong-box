@@ -88,6 +88,13 @@ $ curl --insecure https://kong-box
 At this point, Kong has been successfully deployed.
 
 
+## Deploy Filebeat pod for ELK (optional)
+
+```
+$ vagrant ssh kong-box -- sudo salt-call state.sls filebeat
+```
+
+
 ## Regular Usage
 
 This Section is only applied after finished the first-time initialization procedure.
