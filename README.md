@@ -121,7 +121,7 @@ $ vagrant ssh kong-box -- curl -i http://127.0.0.1:8001/routes
 ```
 
 
-## Simple Example: Forward to CVE Search via Kong
+## Simple Example 1: Forward to CVE Search via Kong
 
 Register CVE Search webservice as `cvesearch` and setup routing with prefix `/cvesearch`:
 ```
@@ -144,3 +144,13 @@ To delete a service, delete their routes first. For example:
 $ vagrant ssh kong-box -- curl -i -X DELETE --url http://127.0.0.1:8001/routes/cvesearch-route
 $ vagrant ssh kong-box -- curl -i -X DELETE --url http://127.0.0.1:8001/services/cvesearch
 ```
+
+
+## Simple Example 2: Forwarding to different Service
+
+Let's say `cvesearch` has released APIv2 and you want your existing `cvesearch` instance to support APIv2. You may create a new service with `/apiv2/` for example:
+```
+$ vagrant ssh kong-box -- curl -i -X POST --url http://127.0.0.1:8001/services/ --data 'name=cvesearch-v2' --data 'url=https://cve.circl.lu/apiv2'
+$ vagrant ssh kong-box -- curl -i -X POST --url http://127.0.0.1:8001/services/cvesearch-v2/routes --data 'name=cvesearch-v2-route' --data 'paths[]=/apiv2/'
+```
+
