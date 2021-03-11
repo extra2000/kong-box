@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/extra2000/kong-box/compare/v1.1.0...v1.1.1) (2021-03-11)
+
+
+### Documentations
+
+* **README:** Add example how to forward to different services via route ([cf0bfd8](https://github.com/extra2000/kong-box/commit/cf0bfd82aacbb7072807b5d494b8a000a12af2c1))
+
 ## [1.1.0](https://github.com/extra2000/kong-box/compare/v1.0.0...v1.1.0) (2021-03-09)
 
 
