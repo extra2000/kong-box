@@ -72,19 +72,9 @@ $ vagrant ssh kong-box -- podman run -it --rm --network=kongnet docker.io/curlim
 $ vagrant ssh kong-box -- podman run -it --rm --network=kongnet docker.io/curlimages/curl curl --insecure https://kong-pod.kongnet:8444
 ```
 
-On RedHat and SUSE families, execute the following commands to forward port 8443 to port 443:
-```
-$ vagrant ssh kong-box -- sudo dnf install -y firewalld
-$ vagrant ssh kong-box -- sudo systemctl start firewalld
-$ vagrant ssh kong-box -- sudo systemctl enable firewalld
-$ vagrant ssh kong-box -- sudo firewall-cmd --zone=public --add-forward-port=port=443:proto=tcp:toport=8443:proto=tcp --permanent
-$ vagrant ssh kong-box -- sudo firewall-cmd --zone=public --add-service=https --permanent
-$ vagrant ssh kong-box -- sudo firewall-cmd --reload
-```
-
 Finally, try access Kong from host and make sure the command success (for example, it should display `{"message":"no Route matched with those values"}`):
 ```
-$ curl --insecure https://kong-box
+$ curl --insecure https://kong-box:8443
 ```
 
 At this point, Kong has been successfully deployed.
@@ -131,7 +121,7 @@ $ vagrant ssh kong-box -- curl -i -X POST --url http://127.0.0.1:8001/services/c
 
 Execute the following command from host and make sure it works:
 ```
-$ curl --insecure https://kong-box/api/browse/microsoft
+$ curl --insecure https://kong-box:8443/api/browse/microsoft
 ```
 
 To change service URL:
