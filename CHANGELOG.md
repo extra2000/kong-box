@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://github.com/extra2000/kong-box/compare/v1.1.1...v1.2.0) (2021-03-14)
+
+
+### Features
+
+* **submodule:** Update `filebeat-formula` to [v1.1.2](https://github.com/extra2000/filebeat-formula/releases/tag/v1.1.2) ([805a384](https://github.com/extra2000/kong-box/commit/805a384fc726d44d9de4c0ceb92197e5df76f298))
+* **submodule:** Update `kong-formula` to [v1.0.2](https://github.com/extra2000/kong-formula/releases/tag/v1.0.2) ([67f74aa](https://github.com/extra2000/kong-box/commit/67f74aa7690ecc77022154cc1410e77decc25503))
+
+
+### Documentations
+
+* **README:** Remove firewall instructions to forward port 8443 to 443 because Kong is supposed to be deployed behind a load balancer such as NGINX ([a3d81c8](https://github.com/extra2000/kong-box/commit/a3d81c8c6d1ee95a3c4220d7e82d3b8b622952cb))
+
+
+### Fixes
+
+* **/etc/minion:** Using new style for `module.run` ([0c57e96](https://github.com/extra2000/kong-box/commit/0c57e960ebfef36d9cf991a43490d9bb8099812e))
+
 ### [1.1.1](https://github.com/extra2000/kong-box/compare/v1.1.0...v1.1.1) (2021-03-11)
 
 
