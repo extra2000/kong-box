@@ -6,6 +6,7 @@ kong:
     hostuser:
       name: vagrant
       group: vagrant
+    host_network: true
     pod:
       network:
         subnet: 10.77.1.0/24
