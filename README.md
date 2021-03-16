@@ -66,10 +66,16 @@ Deploy Kong container:
 $ vagrant ssh kong-box -- sudo salt-call state.sls kong.service.kong
 ```
 
-Try accessing Kong services to ensure Kong has successfully deployed:
+Try accessing Kong services to ensure Kong has successfully deployed (it will not work if you set `host_network: true` in `salt/roots/pillar/kong.sls`):
 ```
 $ vagrant ssh kong-box -- podman run -it --rm --network=kongnet docker.io/curlimages/curl curl http://kong-pod.kongnet:8001
 $ vagrant ssh kong-box -- podman run -it --rm --network=kongnet docker.io/curlimages/curl curl --insecure https://kong-pod.kongnet:8444
+```
+
+If you set `host_network: true` in `salt/roots/pillar/kong.sls`, then you need to use `localhost` or `127.0.0.1`:
+```
+$ vagrant ssh kong-box -- podman run -it --rm --network=host docker.io/curlimages/curl curl http://127.0.0.1:8001
+$ vagrant ssh kong-box -- podman run -it --rm --network=host docker.io/curlimages/curl curl --insecure https://127.0.0.1:8001
 ```
 
 Finally, try access Kong from host and make sure the command success (for example, it should display `{"message":"no Route matched with those values"}`):
